@@ -13,6 +13,14 @@ package ExtSort;
 public class Info {
     public int count;
     public int see;
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void setSee(int see) {
+        this.see = see;
+    }
     public void setInfo(int cnt,int see){
         this.count = cnt;
         this.see = see;

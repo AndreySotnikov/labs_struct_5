@@ -17,6 +17,10 @@ import java.io.RandomAccessFile;
  */
 public class cFile {
     private RandomAccessFile f;
+    private String fname;
+    private int last;
+    private boolean eosec;
+    private boolean eof;    
 
     public RandomAccessFile getF() {
         return f;
@@ -53,14 +57,11 @@ public class cFile {
     public void setEof(boolean eof) {
         this.eof = eof;
     }
-    private String fname;
-    private int last;
-    private boolean eosec;
-    private boolean eof;
+
     
     public cFile(String s) throws FileNotFoundException{
         fname = s;
-        f = new RandomAccessFile(fname,"rw");
+        //f = new RandomAccessFile(fname,"rw");
     }
     
     public void copy(cFile f2) throws IOException{
@@ -91,7 +92,7 @@ public class cFile {
     }
     
     public void openread() throws IOException{
-        f = new RandomAccessFile(fname,"rw");
+        f = new RandomAccessFile(fname,"r");
         eof = f.getFilePointer()==f.length();
         eosec = eof;
         if (!eof)
@@ -106,5 +107,6 @@ public class cFile {
     public void closefile() throws IOException{
         f.close();
     }
+
     
 }
