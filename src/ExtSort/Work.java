@@ -55,8 +55,9 @@ public class Work {
         f2.copysec(f0);        
     }
     
-    public void Distribute(cFile f0, cFile f1, cFile f2) throws IOException{
+    public void Distribute(cFile f0, cFile f1, cFile f2,Info inf) throws IOException{
         int i = 1;
+        int w=0;
         while (!f0.isEof()){
             f0.nextsec();
             i = 1-i;
@@ -64,7 +65,9 @@ public class Work {
                 f0.copysec(f1);
             else
                 f0.copysec(f2);
+            w++;
         }
+        inf.setWrite(w);
     }
     
     public void Copy(cFile f1, cFile f2) throws IOException{
@@ -74,7 +77,7 @@ public class Work {
     }
     
     public int Merge(cFile f1, cFile f2, cFile f3, cFile f4,Info inf) throws IOException{
-        int see = inf.see;
+        int w = inf.write;
         int result = 0;
         f1.openread();
         f2.openread();
@@ -82,11 +85,11 @@ public class Work {
         f4.openwrite();
         while (!f1.isEof() || !f2.isEof()){
             writesec(f1,f2,f3);
-            see++;
+            w++;
             result++;
             if (!f1.isEof() || !f2.isEof()){
                 writesec(f1,f2,f4);
-                see++;
+                w++;
                 result++;
             }
         }
@@ -94,7 +97,7 @@ public class Work {
         f2.closefile();
         f3.closefile();
         f4.closefile();
-        inf.setSee(see);
+        inf.setWrite(w);
         //inf.setInfo(0, see);
         return result;
     }
@@ -114,7 +117,7 @@ public class Work {
         }
         ff3.openwrite();
         ff4.openwrite();
-        Distribute(ff1,ff3,ff4);
+        Distribute(ff1,ff3,ff4,inf);
         ff1.closefile();
         ff3.closefile();
         ff4.closefile();

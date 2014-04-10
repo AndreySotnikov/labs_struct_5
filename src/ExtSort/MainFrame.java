@@ -8,6 +8,12 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javax.management.Query.value;
+import javax.swing.JOptionPane;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingWorker;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -25,6 +31,7 @@ public class MainFrame extends javax.swing.JFrame {
     private DefaultTableModel model1;
     private DefaultTableModel model2;
     private DefaultTableModel model3;
+    public static int nmbtest = 4;
     /**
      * Creates new form MainFrame
      */
@@ -33,6 +40,8 @@ public class MainFrame extends javax.swing.JFrame {
         model1 = (DefaultTableModel) jTable1.getModel();
         model2 = (DefaultTableModel) jTable2.getModel();
         model3 = (DefaultTableModel) jTable3.getModel();
+        jSpinner1.setModel(new SpinnerNumberModel(1, 1, 7, 1));
+        spinner.setModel(new SpinnerNumberModel(10,1,10000000,1));
     }
 
     /**
@@ -63,8 +72,12 @@ public class MainFrame extends javax.swing.JFrame {
         lblsize = new javax.swing.JLabel();
         lblinp = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        jSpinner1 = new javax.swing.JSpinner();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Внешние сортировки");
 
         starttest.setText("Начать тест");
         starttest.addActionListener(new java.awt.event.ActionListener() {
@@ -107,12 +120,14 @@ public class MainFrame extends javax.swing.JFrame {
         ));
         jScrollPane7.setViewportView(jTable3);
 
-        jTabbedPane3.addTab("Количество просмотров файла", jScrollPane7);
+        jTabbedPane3.addTab("Количество записей последовательности", jScrollPane7);
 
+        output.setEditable(false);
         output.setColumns(20);
         output.setRows(5);
         jScrollPane2.setViewportView(output);
 
+        input.setEditable(false);
         input.setColumns(20);
         input.setRows(5);
         jScrollPane3.setViewportView(input);
@@ -147,28 +162,24 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(startsort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(gen)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblsize)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(spinner, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(lblsize)
+                        .addGap(18, 18, 18)
+                        .addComponent(spinner))
+                    .addComponent(gen, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                    .addComponent(startsort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblinp)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addComponent(lblinp)
-                        .addGap(42, 42, 42))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addContainerGap())
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGap(44, 44, 44))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addContainerGap(84, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,18 +196,22 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(startsort)
                         .addGap(0, 170, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblinp)
                             .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addGap(14, 14, 14)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3)
+                            .addComponent(jScrollPane2))))
                 .addContainerGap())
         );
 
         jTabbedPane3.addTab("Тест алгоритма", jPanel1);
+
+        jSpinner1.setValue(1);
+
+        jLabel2.setText("Кол-во тестов");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -205,15 +220,27 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 534, Short.MAX_VALUE)
-                    .addComponent(starttest))
-                .addGap(21, 21, 21))
+                    .addComponent(jTabbedPane3)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(starttest)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(starttest)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(starttest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                 .addContainerGap())
@@ -223,43 +250,103 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void starttestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_starttestActionPerformed
-        model1.setRowCount(4);
-        model2.setRowCount(4);
-        model3.setRowCount(4);
-        long st,fn;
-        Work w = new Work();
-        for (int i = 0;i<4;i++){
-            try {
+        SwingWorker swg = new SwingWorker() {
+
+            public int doTest(Work w, int size, int i, int percent) throws IOException {
+                long st, fn;
                 Info inf = new Info();
-                int size = (int)Math.pow(10, i+1);
-                
-                w.randomfile("test1.txt", size);
-                st = System.currentTimeMillis();
-                w.Sort("test1.txt",inf);
-                fn = System.currentTimeMillis();
                 model1.setValueAt(Integer.toString(size), i, 0);
                 model2.setValueAt(Integer.toString(size), i, 0);
                 model3.setValueAt(Integer.toString(size), i, 0);
-                model1.setValueAt(Long.toString(fn-st), i, 1); 
-                model2.setValueAt(Integer.toString(inf.count), i, 1);
-                model3.setValueAt(Integer.toString(inf.see), i, 1);
-                File file = new File("test1.txt");
-                file.delete();                
-                w.reversefile("test1.txt", size);
+
+                w.randomfile("test1.txt", size);
+
                 st = System.currentTimeMillis();
-                w.Sort("test1.txt",inf);
-                fn = System.currentTimeMillis();     
+                w.Sort("test1.txt", inf);
+                fn = System.currentTimeMillis();
+
+                percent += 100 / (2 * nmbtest);
+                jProgressBar1.setValue(percent);
+
+                model1.setValueAt(Long.toString(fn - st), i, 1);
+                model2.setValueAt(Integer.toString(inf.count), i, 1);
+                model3.setValueAt(Integer.toString(inf.write), i, 1);
+
+                File file = new File("test1.txt");
+                file.delete();
+
+                w.reversefile("test1.txt", size);
+
+                st = System.currentTimeMillis();
+                w.Sort("test1.txt", inf);
+                fn = System.currentTimeMillis();
+
+                percent += 100 / (2 * nmbtest);
+                jProgressBar1.setValue(percent);
+
                 model2.setValueAt(Integer.toString(inf.count), i, 2);
-                model1.setValueAt(Long.toString(fn-st), i, 2);
-                model3.setValueAt(Integer.toString(inf.see), i, 2);
+                model1.setValueAt(Long.toString(fn - st), i, 2);
+                model3.setValueAt(Integer.toString(inf.write), i, 2);
+
                 file = new File("test1.txt");
-                file.delete();                       
-                
-            } catch (IOException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                file.delete();
+                return percent;
             }
-        }
-        
+
+            public int doSomeWork() {
+                nmbtest = (int) jSpinner1.getValue();
+                while (model1.getRowCount() > 0) {
+                    model1.removeRow(0);
+                }
+                while (model2.getRowCount() > 0) {
+                    model2.removeRow(0);
+                }
+                while (model3.getRowCount() > 0) {
+                    model3.removeRow(0);
+                }
+                model1.setRowCount(nmbtest);
+                model2.setRowCount(nmbtest);
+                model3.setRowCount(nmbtest);
+                jProgressBar1.setMinimum(0);
+                jProgressBar1.setMaximum(100 / (2 * nmbtest) * (2 * nmbtest));
+                int percent = 0;
+                jProgressBar1.setValue(percent);
+                Work w = new Work();
+                if (nmbtest == 1) {
+                    try {
+                        String s;
+                        s = JOptionPane.showInputDialog("Размер файла для тестирования");
+                        int size = Integer.parseInt(s);
+                        
+                        doTest(w, size, 0, percent);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch(NumberFormatException ex){
+                        JOptionPane.showMessageDialog(null, "Неверный размер файла");
+                    }
+
+                } else {
+                    for (int i = 0; i < nmbtest; i++) {
+                        try {
+                            int size = (int) Math.pow(10, i + 1);
+
+                            percent = doTest(w, size, i, percent);
+                        } catch (IOException ex) {
+                            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                return 1;
+            }
+
+            @Override
+            protected Object doInBackground() throws Exception {
+                return new Integer(doSomeWork());
+            }
+
+        };
+        swg.execute();
+
     }//GEN-LAST:event_starttestActionPerformed
 
     private void genActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genActionPerformed
@@ -334,6 +421,17 @@ public class MainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InstantiationException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnsupportedLookAndFeelException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 new MainFrame().setVisible(true);
             }
         });
@@ -343,12 +441,15 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton gen;
     private javax.swing.JTextArea input;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
