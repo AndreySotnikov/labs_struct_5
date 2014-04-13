@@ -18,30 +18,11 @@ import javax.swing.JTextArea;
  * @author andrey
  */
 public class Work {
-    //private cFile[] source;
-    //private cFile[] dest;
     private cFile ff1;
     private cFile ff2;
     private cFile ff3;
     private cFile ff4;
     
-    public Work(){
-        //source = new cFile[2];
-        //dest = new cFile[2];        
-    }
-    
-    /*public void writesec(cFile dest) throws IOException{
-        source[0].nextsec();
-        source[1].nextsec();
-        while (!source[0].isEosec() && !source[1].isEosec()){
-            if (source[0].getLast()<source[1].getLast())
-                source[0].copy(dest);
-            else
-                source[1].copy(dest);
-        }
-        source[0].copysec(dest);
-        source[1].copysec(dest);
-    }*/
     public void writesec(cFile f1, cFile f2, cFile f0) throws IOException{
         f1.nextsec();
         f2.nextsec();
@@ -71,9 +52,13 @@ public class Work {
     }
     
     public void Copy(cFile f1, cFile f2) throws IOException{
+        f1.open();
+        f2.openwrite();
         while (!f1.isEof()){
             f2.getF().writeInt(f1.getF().readInt());
         }
+        f1.closefile();
+        f2.closefile();
     }
     
     public int Merge(cFile f1, cFile f2, cFile f3, cFile f4,Info inf) throws IOException{
@@ -93,12 +78,15 @@ public class Work {
                 result++;
             }
         }
+        /*f1.getFin().close();
+        f2.getFin().close();
+        f3.getFout().close();
+        f4.getFout().close();*/
         f1.closefile();
         f2.closefile();
         f3.closefile();
         f4.closefile();
         inf.setWrite(w);
-        //inf.setInfo(0, see);
         return result;
     }
     
@@ -118,9 +106,12 @@ public class Work {
         ff3.openwrite();
         ff4.openwrite();
         Distribute(ff1,ff3,ff4,inf);
+        /*ff1.getFin().close();
+        ff3.getFout().close();
+        ff4.getFout().close();*/
         ff1.closefile();
         ff3.closefile();
-        ff4.closefile();
+        ff4.closefile();       
         do{
             OK = !OK;
             sumsec = Merge(ff3,ff4,ff1,ff2,inf);
@@ -136,8 +127,6 @@ public class Work {
         ff3.delete();
         ff4.delete();
         inf.setCount(cnt);
-        //int see = inf.see;
-        //inf.setInfo(cnt,see);
     }
     
     public RandomAccessFile randomfile(String s, int len) throws FileNotFoundException, IOException{
@@ -145,16 +134,6 @@ public class Work {
         RandomAccessFile f = new RandomAccessFile(s,"rw");
         for(int i = 0;i < len; i++)
             f.writeInt(rand.nextInt(1000));
-        /*f.writeInt(327);
-f.writeInt(967);
-f.writeInt(733);
-f.writeInt(945);
-f.writeInt(219);
-f.writeInt(764);
-f.writeInt(909);
-f.writeInt(56);
-f.writeInt(281);
-f.writeInt(372);*/
         f.close();
         return f;
     }

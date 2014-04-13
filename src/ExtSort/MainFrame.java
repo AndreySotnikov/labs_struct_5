@@ -37,10 +37,10 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        model1 = (DefaultTableModel) jTable1.getModel();
-        model2 = (DefaultTableModel) jTable2.getModel();
-        model3 = (DefaultTableModel) jTable3.getModel();
-        jSpinner1.setModel(new SpinnerNumberModel(1, 1, 7, 1));
+        model1 = (DefaultTableModel) jTabletime.getModel();
+        model2 = (DefaultTableModel) jTablecycle.getModel();
+        model3 = (DefaultTableModel) jTablewrite.getModel();
+        cnttest.setModel(new SpinnerNumberModel(1, 1, 7, 1));
         spinner.setModel(new SpinnerNumberModel(10,1,10000000,1));
     }
 
@@ -56,11 +56,11 @@ public class MainFrame extends javax.swing.JFrame {
         starttest = new javax.swing.JButton();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTabletime = new javax.swing.JTable();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jTablecycle = new javax.swing.JTable();
         jScrollPane7 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        jTablewrite = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         output = new javax.swing.JTextArea();
@@ -72,8 +72,8 @@ public class MainFrame extends javax.swing.JFrame {
         lblsize = new javax.swing.JLabel();
         lblinp = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jProgressBar1 = new javax.swing.JProgressBar();
-        jSpinner1 = new javax.swing.JSpinner();
+        progressBar = new javax.swing.JProgressBar();
+        cnttest = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -86,7 +86,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTabletime.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -94,11 +94,11 @@ public class MainFrame extends javax.swing.JFrame {
                 "Размер файла", "Случайный файл", "Обратный файл"
             }
         ));
-        jScrollPane5.setViewportView(jTable1);
+        jScrollPane5.setViewportView(jTabletime);
 
         jTabbedPane3.addTab("Время выполнения", jScrollPane5);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jTablecycle.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -106,11 +106,11 @@ public class MainFrame extends javax.swing.JFrame {
                 "Размер файла", "Случайный файл", "Обратный файл"
             }
         ));
-        jScrollPane6.setViewportView(jTable2);
+        jScrollPane6.setViewportView(jTablecycle);
 
         jTabbedPane3.addTab("Количество проходов", jScrollPane6);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        jTablewrite.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -118,7 +118,7 @@ public class MainFrame extends javax.swing.JFrame {
                 "Размер файла", "Случайный файл", "Обратный файл"
             }
         ));
-        jScrollPane7.setViewportView(jTable3);
+        jScrollPane7.setViewportView(jTablewrite);
 
         jTabbedPane3.addTab("Количество записей последовательности", jScrollPane7);
 
@@ -209,7 +209,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jTabbedPane3.addTab("Тест алгоритма", jPanel1);
 
-        jSpinner1.setValue(1);
+        cnttest.setValue(1);
 
         jLabel2.setText("Кол-во тестов");
 
@@ -224,11 +224,11 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cnttest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(starttest)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -238,9 +238,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(starttest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cnttest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2))
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                 .addContainerGap())
@@ -266,7 +266,7 @@ public class MainFrame extends javax.swing.JFrame {
                 fn = System.currentTimeMillis();
 
                 percent += 100 / (2 * nmbtest);
-                jProgressBar1.setValue(percent);
+                progressBar.setValue(percent);
 
                 model1.setValueAt(Long.toString(fn - st), i, 1);
                 model2.setValueAt(Integer.toString(inf.count), i, 1);
@@ -282,7 +282,7 @@ public class MainFrame extends javax.swing.JFrame {
                 fn = System.currentTimeMillis();
 
                 percent += 100 / (2 * nmbtest);
-                jProgressBar1.setValue(percent);
+                progressBar.setValue(percent);
 
                 model2.setValueAt(Integer.toString(inf.count), i, 2);
                 model1.setValueAt(Long.toString(fn - st), i, 2);
@@ -294,7 +294,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
 
             public int doSomeWork() {
-                nmbtest = (int) jSpinner1.getValue();
+                nmbtest = (int) cnttest.getValue();
                 while (model1.getRowCount() > 0) {
                     model1.removeRow(0);
                 }
@@ -307,10 +307,10 @@ public class MainFrame extends javax.swing.JFrame {
                 model1.setRowCount(nmbtest);
                 model2.setRowCount(nmbtest);
                 model3.setRowCount(nmbtest);
-                jProgressBar1.setMinimum(0);
-                jProgressBar1.setMaximum(100 / (2 * nmbtest) * (2 * nmbtest));
+                progressBar.setMinimum(0);
+                progressBar.setMaximum(100 / (2 * nmbtest) * (2 * nmbtest));
                 int percent = 0;
-                jProgressBar1.setValue(percent);
+                progressBar.setValue(percent);
                 Work w = new Work();
                 if (nmbtest == 1) {
                     try {
@@ -326,9 +326,11 @@ public class MainFrame extends javax.swing.JFrame {
                     }
 
                 } else {
+                    int size=1;
                     for (int i = 0; i < nmbtest; i++) {
                         try {
-                            int size = (int) Math.pow(10, i + 1);
+                            //int size = (int) Math.pow(10, i + 1);
+                            size *= 10;
 
                             percent = doTest(w, size, i, percent);
                         } catch (IOException ex) {
@@ -438,25 +440,25 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSpinner cnttest;
     private javax.swing.JButton gen;
     private javax.swing.JTextArea input;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
+    private javax.swing.JTable jTablecycle;
+    private javax.swing.JTable jTabletime;
+    private javax.swing.JTable jTablewrite;
     private javax.swing.JLabel lblinp;
     private javax.swing.JLabel lblsize;
     private javax.swing.JTextArea output;
+    private javax.swing.JProgressBar progressBar;
     private javax.swing.JSpinner spinner;
     private javax.swing.JButton startsort;
     private javax.swing.JButton starttest;
