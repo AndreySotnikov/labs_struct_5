@@ -108,7 +108,7 @@ public class MainFrame extends javax.swing.JFrame {
         ));
         jScrollPane6.setViewportView(jTablecycle);
 
-        jTabbedPane3.addTab("Количество проходов", jScrollPane6);
+        jTabbedPane3.addTab("Количество сравнений", jScrollPane6);
 
         jTablewrite.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -120,7 +120,7 @@ public class MainFrame extends javax.swing.JFrame {
         ));
         jScrollPane7.setViewportView(jTablewrite);
 
-        jTabbedPane3.addTab("Количество записей последовательности", jScrollPane7);
+        jTabbedPane3.addTab("Количество просмотров файла", jScrollPane7);
 
         output.setEditable(false);
         output.setColumns(20);
@@ -270,7 +270,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                 model1.setValueAt(Long.toString(fn - st), i, 1);
                 model2.setValueAt(Integer.toString(inf.count), i, 1);
-                model3.setValueAt(Integer.toString(inf.write), i, 1);
+                model3.setValueAt(Integer.toString(inf.see), i, 1);
 
                 File file = new File("test1.txt");
                 file.delete();
@@ -286,7 +286,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                 model2.setValueAt(Integer.toString(inf.count), i, 2);
                 model1.setValueAt(Long.toString(fn - st), i, 2);
-                model3.setValueAt(Integer.toString(inf.write), i, 2);
+                model3.setValueAt(Integer.toString(inf.see), i, 2);
 
                 file = new File("test1.txt");
                 file.delete();
@@ -354,6 +354,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void genActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genActionPerformed
         try {
             input.setText("");
+            output.setText("");
             Work work = new Work();
             Info inf = new Info();
             work.randomfile("random.txt", (int)spinner.getValue());

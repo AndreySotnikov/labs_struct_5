@@ -12,17 +12,17 @@ package ExtSort;
  */
 public class Info {
     public int count;
-    public int write;
+    public int see;
 
     public void setCount(int count) {
         this.count = count;
     }
 
-    public void setWrite(int w) {
-        this.write = w;
+    public void setSee(int w) {
+        this.see = w;
     }
     public void setInfo(int cnt,int w){
         this.count = cnt;
-        this.write = w;
+        //this.write = w;
     }
 }

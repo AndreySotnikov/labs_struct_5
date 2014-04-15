@@ -23,61 +23,73 @@ public class Work {
     private cFile ff3;
     private cFile ff4;
     
-    public void writesec(cFile f1, cFile f2, cFile f0) throws IOException{
+    public int writesec(cFile f1, cFile f2, cFile f0) throws IOException{
         f1.nextsec();
         f2.nextsec();
+        int cnt = 0; 
         while (!f1.isEosec() && !f2.isEosec()){
+            cnt++;
             if (f1.getLast()<f2.getLast())
-                f1.copy(f0);
+                cnt += f1.copy(f0);
             else
-                f2.copy(f0);
+                cnt += f2.copy(f0);
         }
-        f1.copysec(f0);
-        f2.copysec(f0);        
+        if (!f1.isEosec())
+            cnt += f1.copysec(f0);
+        else
+            cnt += f2.copysec(f0);   
+        return cnt;
     }
     
-    public void Distribute(cFile f0, cFile f1, cFile f2,Info inf) throws IOException{
+    public int Distribute(cFile f0, cFile f1, cFile f2,Info inf) throws IOException{
+        f0.openread();
+        f1.openwrite();
+        f2.openwrite();
+        int cnt = 0;
         int i = 1;
         int w=0;
         while (!f0.isEof()){
-            f0.nextsec();
+            cnt += f0.copysec(f1);
+            w++;
+            if (!f0.isEof()){
+                cnt += f0.copysec(f2);
+                w++;
+            }
+            /*f0.nextsec();
             i = 1-i;
             if (i==0)
                 f0.copysec(f1);
             else
                 f0.copysec(f2);
-            w++;
+            w++;*/
         }
-        inf.setWrite(w);
-    }
-    
-    public void Copy(cFile f1, cFile f2) throws IOException{
-        f1.open();
-        f2.openwrite();
-        while (!f1.isEof()){
-            f2.getF().writeInt(f1.getF().readInt());
-        }
+        inf.setCount(cnt);
         f1.closefile();
         f2.closefile();
+        f0.closefile();
+        return w;
+        //inf.setWrite(w);
     }
     
     public int Merge(cFile f1, cFile f2, cFile f3, cFile f4,Info inf) throws IOException{
-        int w = inf.write;
+        //int w = inf.write;
         int result = 0;
+        int cnt = inf.count;
         f1.openread();
         f2.openread();
         f3.openwrite();
         f4.openwrite();
         while (!f1.isEof() || !f2.isEof()){
-            writesec(f1,f2,f3);
-            w++;
+            cnt += writesec(f1,f2,f3);
+            //w++;
             result++;
             if (!f1.isEof() || !f2.isEof()){
-                writesec(f1,f2,f4);
-                w++;
+                cnt += writesec(f1,f2,f4);
+                //w++;
                 result++;
             }
         }
+        inf.setCount(cnt);
         /*f1.getFin().close();
         f2.getFin().close();
         f3.getFout().close();
@@ -86,47 +98,51 @@ public class Work {
         f2.closefile();
         f3.closefile();
         f4.closefile();
-        inf.setWrite(w);
+        //inf.setWrite(w);
         return result;
     }
     
     public void Sort(String s, Info inf) throws FileNotFoundException, IOException{
         ff1 = new cFile(s);
-        ff2 = new cFile("temp2.tmp");
-        ff3 = new cFile("temp3.tmp");
-        ff4 = new cFile("temp4.tmp");
         int sumsec = 0;
-        int cnt=0;
         boolean OK = false;
-        ff1.openread();
+        /*ff1.openread();
         if (ff1.isempty()){
             ff1.closefile();
             return;
         }
         ff3.openwrite();
-        ff4.openwrite();
-        Distribute(ff1,ff3,ff4,inf);
+        ff4.openwrite();*/
+        if (ff1.isempty())
+            return;
+        ff2 = new cFile("temp2.tmp");
+        ff3 = new cFile("temp3.tmp");
+        ff4 = new cFile("temp4.tmp");
+        sumsec = Distribute(ff1,ff3,ff4,inf);
+        int see = 1;
         /*ff1.getFin().close();
         ff3.getFout().close();
         ff4.getFout().close();*/
-        ff1.closefile();
-        ff3.closefile();
-        ff4.closefile();       
-        do{
+        //ff1.closefile();
+        //ff3.closefile();
+        //ff4.closefile();       
+        while (sumsec>1){
             OK = !OK;
             sumsec = Merge(ff3,ff4,ff1,ff2,inf);
+            see++;
             if (sumsec>1){
                 OK = !OK;
                 sumsec += Merge(ff1,ff2,ff3,ff4,inf);
+                see++;
             }
-            cnt++;
-        }while(sumsec>1);
+            //cnt++;
+        }//while(sumsec>1);
         if (!OK)
-            Copy(ff3,ff1);
+            ff3.rename(ff1);
         ff2.delete();
         ff3.delete();
         ff4.delete();
-        inf.setCount(cnt);
+        inf.setSee(see);
     }
     
     public RandomAccessFile randomfile(String s, int len) throws FileNotFoundException, IOException{

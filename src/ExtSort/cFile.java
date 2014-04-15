@@ -71,18 +71,27 @@ public class cFile {
         file = new File(fname);
     }
     
-    public void copy(cFile f2) throws IOException{
+    public int copy(cFile f2) throws IOException{
+        int cnt = 0;
         f2.f.writeInt(last);
         f2.last = last;
         eof = f.getFilePointer()==f.length();
-        if (!eof)
+        if (!eof){
             last = f.readInt();
+            cnt++;
+        }
         eosec = eof || (f2.last>last);
+        return cnt;
     }
     
-    public void copysec(cFile f2) throws IOException{
-        while (!eosec)
-            copy(f2);
+    public int copysec(cFile f2) throws IOException{
+        int cnt = 0;
+        do{
+            cnt += copy(f2);
+        }while (!eosec);
+        return cnt;
+        //while (!eosec)
+          //  copy(f2);
     }
     
     public void delete() throws IOException{
@@ -91,7 +100,10 @@ public class cFile {
     }
     
     public boolean isempty() throws IOException{
-        return f.length()==0;
+        f = new RandomAccessFile(file,"r");
+        boolean result = f.length()==0;
+        f.close();
+        return result;
     }
     
     public void nextsec(){
@@ -120,6 +132,12 @@ public class cFile {
     public void open() throws FileNotFoundException{
         //f = new RandomAccessFile(fname,"r");
         f = new RandomAccessFile(file,"r");
+    }
+    
+    public void rename(cFile f1){
+        String n = f1.getFname();
+        //f1.file.delete();
+        this.file.renameTo(f1.file);
     }
 /*    //private RandomAccessFile f;
     private DataInputStream fin;
